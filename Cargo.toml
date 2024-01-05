@@ -1,0 +1,13 @@
+[package]
+name = "opus-embedded"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+[dev-dependencies]
+ogg = "0.9.1"
+opus = "0.3"
+cpal = "0.15.2"
