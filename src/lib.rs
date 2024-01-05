@@ -1,4 +1,5 @@
-use std::ffi::c_int;
+#![no_std]
+use core::ffi::c_int;
 
 pub fn decoder_size(channel_count: usize) -> usize {
     assert!(channel_count == 1 || channel_count == 2);
@@ -42,7 +43,7 @@ impl<'a> Decoder<'a> {
 
 mod opus_sys {
     #![allow(dead_code)]
-    use std::ffi::{c_int, c_uchar};
+    use core::ffi::{c_int, c_uchar};
 
     extern "C" {
         pub fn opus_decoder_get_size(channels: c_int) -> c_int;

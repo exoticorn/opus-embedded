@@ -23,10 +23,11 @@ fn main() {
 
     config.opt_level(2);
 
-    config.flag_if_supported("-Wno-unused-parameter");
-    config.flag_if_supported("-Wno-unused-value");
-    config.flag_if_supported("-Wno-stringop-overread"); // TODO: investigate whether warning is valid
-    config.flag_if_supported("-Wno-maybe-uninitialized"); // dito
+    config.flag("-Wno-unused-parameter");
+    config.flag("-Wno-unused-value");
+    config.flag("-Wno-cpp");
+    config.flag("-Wno-stringop-overread"); // TODO: investigate whether warning is valid
+    config.flag("-Wno-maybe-uninitialized"); // dito
 
     let mut files = vec![];
 
