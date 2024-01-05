@@ -6,8 +6,10 @@ use cpal::{
 };
 
 fn main() {
+    let decoder_object_buffer = vec![0u8; opus_embedded::decoder_size(1)].leak();
+    let mut opus_decoder = opus_embedded::Decoder::new(decoder_object_buffer, 48000, 1);
+
     let mut ogg_reader = ogg::PacketReader::new(File::open(env::args().nth(1).unwrap()).unwrap());
-    let mut opus_decoder = opus::Decoder::new(48000, opus::Channels::Mono).unwrap();
     let mut sample_buffer = [0i16; 8192];
     let mut read_position = 0;
     let mut write_position = 0;
@@ -28,9 +30,8 @@ fn main() {
                 while !buffer.is_empty() {
                     if write_position == 0 {
                         if let Some(packet) = ogg_reader.read_packet().unwrap() {
-                            write_position = opus_decoder
-                                .decode(&packet.data, &mut sample_buffer, false)
-                                .unwrap();
+                            write_position =
+                                opus_decoder.decode(&packet.data, &mut sample_buffer, false);
                         } else {
                             for sample in buffer {
                                 *sample = 0;

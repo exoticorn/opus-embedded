@@ -9,5 +9,4 @@ glob = "0.3.1"
 
 [dev-dependencies]
 ogg = "0.9.1"
-opus = "0.3"
 cpal = "0.15.2"

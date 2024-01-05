@@ -35,6 +35,7 @@ fn main() {
     add_sources(&mut files, "opus-1.4/silk/fixed/*.c");
     add_sources(&mut files, "opus-1.4/src/opus.c");
     add_sources(&mut files, "opus-1.4/src/opus_??coder.c");
+    add_sources(&mut files, "opus-1.4/src/repacketizer.c");
 
     exclude(&mut files, "**/_custom*");
 
