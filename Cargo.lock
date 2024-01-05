@@ -506,7 +506,9 @@ dependencies = [
 name = "opus-embedded"
 version = "0.1.0"
 dependencies = [
+ "cc",
  "cpal",
+ "glob",
  "ogg",
  "opus",
 ]
