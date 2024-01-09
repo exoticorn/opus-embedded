@@ -477,12 +477,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "ogg"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5477016638150530ba21dec7caac835b29ef69b20865751d2973fce6be386cf1"
+name = "ogg-embedded"
+version = "0.1.0"
 dependencies = [
- "byteorder",
+ "heapless",
 ]
 
 [[package]]
@@ -498,8 +496,7 @@ dependencies = [
  "cc",
  "cpal",
  "glob",
- "heapless",
- "ogg",
+ "ogg-embedded",
 ]
 
 [[package]]
