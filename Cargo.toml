@@ -9,4 +9,5 @@ glob = "0.3.1"
 
 [dev-dependencies]
 cpal = "0.15.2"
-ogg-embedded = { path = "../ogg-embedded" }
+ogg = "0.9.1"
+anyhow = "1"
