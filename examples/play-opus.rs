@@ -27,6 +27,7 @@ fn main() -> Result<()> {
         vec![0u8; opus_embedded::Decoder::required_buffer_size(CHANNEL_COUNT)].leak();
     let mut opus_decoder = opus_embedded::Decoder::new(decoder_object_buffer, 48000, CHANNEL_COUNT)
         .map_err(|err| anyhow!("Failed to create opus decoder: {}", err))?;
+    opus_decoder.set_gain(-256 * 18);
 
     // buffer for decoded opus frame, contains data in range read_position..write_position
     let mut sample_buffer = [0i16; 8192 * CHANNEL_COUNT];

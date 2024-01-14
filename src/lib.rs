@@ -136,6 +136,25 @@ impl<'a> Decoder<'a> {
         }
     }
 
+    /// Configures decoder gain adjustment.
+    ///
+    /// Scales the decoded output by a factor specified in Q8 dB units. The default is zero indicating no adjustment. This setting survives decoder reset.
+    ///
+    /// gain = pow(10, x/(20.0*256))
+    ///
+    /// # Parameters
+    ///
+    /// `gain`: gain in Q8 db units
+    pub fn set_gain(&mut self, gain: i16) {
+        unsafe {
+            opus_sys::opus_decoder_ctl(
+                self.0.as_mut_ptr(),
+                opus_sys::OPUS_SET_GAIN_REQUEST,
+                gain as c_int,
+            );
+        }
+    }
+
     /// Returns the size of the Decoder object in bytes.
     ///
     /// Use this to query the size of the buffer you need to pass into `Decoder::new`.
@@ -172,5 +191,8 @@ mod opus_sys {
             frame_size: c_int,
             decode_fec: c_int,
         ) -> c_int;
+        pub fn opus_decoder_ctl(st: *mut u8, request: c_int, ...) -> c_int;
     }
+
+    pub const OPUS_SET_GAIN_REQUEST: c_int = 4034;
 }
