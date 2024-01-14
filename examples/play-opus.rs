@@ -23,8 +23,10 @@ fn main() -> Result<()> {
 
     // create &'static mut buffer for the opus decoder object
     // on embedded, you'd probably just use an array in a static_cell for this
-    let decoder_object_buffer = vec![0u8; opus_embedded::decoder_size(CHANNEL_COUNT)].leak();
-    let mut opus_decoder = opus_embedded::Decoder::new(decoder_object_buffer, 48000, CHANNEL_COUNT);
+    let decoder_object_buffer =
+        vec![0u8; opus_embedded::Decoder::required_buffer_size(CHANNEL_COUNT)].leak();
+    let mut opus_decoder = opus_embedded::Decoder::new(decoder_object_buffer, 48000, CHANNEL_COUNT)
+        .map_err(|err| anyhow!("Failed to create opus decoder: {}", err))?;
 
     // buffer for decoded opus frame, contains data in range read_position..write_position
     let mut sample_buffer = [0i16; 8192 * CHANNEL_COUNT];
@@ -45,9 +47,10 @@ fn main() -> Result<()> {
                     if read_position == write_position {
                         // no more data in buffer, read and decode next packet
                         if let Some(packet) = ogg_reader.read_packet().unwrap() {
-                            write_position =
-                                opus_decoder.decode(&packet.data, &mut sample_buffer, false)
-                                    * CHANNEL_COUNT;
+                            write_position = opus_decoder
+                                .decode(Some(&packet.data), &mut sample_buffer, false)
+                                .unwrap()
+                                * CHANNEL_COUNT;
                             read_position = 0;
                         } else {
                             for sample in output_buffer {
