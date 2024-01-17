@@ -7,12 +7,17 @@ fn main() {
 
     config.define("OPUS_BUILD", None);
     config.define("DISABLE_FLOAT_API", None);
-    config.define("FIXED_POINT", None);
+    config.define("FIXED_POINT", "1");
     config.define("VAR_ARRAYS", None);
     config.define("OVERRIDE_OPUS_ALLOC", None);
     config.define("opus_alloc(x)", "0");
     config.define("OVERRIDE_OPUS_FREE", None);
     config.define("opus_free(x)", "0");
+    #[cfg(feature = "code-in-ram")]
+    config.define("CODE_IN_RAM", None);
+
+    #[cfg(feature = "code-in-ram")]
+    config.debug(false);
 
     config.includes([
         "opus-1.4/include",
@@ -21,7 +26,7 @@ fn main() {
         "opus-1.4/silk/fixed",
     ]);
 
-    config.opt_level(2);
+    config.opt_level(3);
 
     config.flag("-Wno-unused-parameter");
     config.flag("-Wno-unused-value");

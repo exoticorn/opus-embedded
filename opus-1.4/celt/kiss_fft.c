@@ -40,6 +40,7 @@
 #include "os_support.h"
 #include "mathops.h"
 #include "stack_alloc.h"
+#include "fastfunc.h"
 
 /* The guts header contains all the multiplication and addition macros that are defined for
    complex numbers.  It also delares the kf_ internal functions.
@@ -518,7 +519,7 @@ void opus_fft_free(const kiss_fft_state *cfg, int arch)
 
 #endif /* CUSTOM_MODES */
 
-void opus_fft_impl(const kiss_fft_state *st,kiss_fft_cpx *fout)
+FAST_FUNC void opus_fft_impl(const kiss_fft_state *st,kiss_fft_cpx *fout)
 {
     int m2, m;
     int p;

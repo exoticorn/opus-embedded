@@ -32,6 +32,7 @@ POSSIBILITY OF SUCH DAMAGE.
 #include "SigProc_FIX.h"
 #include "resampler_private.h"
 #include "stack_alloc.h"
+#include "fastfunc.h"
 
 static OPUS_INLINE opus_int16 *silk_resampler_private_IIR_FIR_INTERPOL(
     opus_int16  *out,
@@ -62,7 +63,7 @@ static OPUS_INLINE opus_int16 *silk_resampler_private_IIR_FIR_INTERPOL(
     return out;
 }
 /* Upsample using a combination of allpass-based 2x upsampling and FIR interpolation */
-void silk_resampler_private_IIR_FIR(
+FAST_FUNC void silk_resampler_private_IIR_FIR(
     void                            *SS,            /* I/O  Resampler state             */
     opus_int16                      out[],          /* O    Output signal               */
     const opus_int16                in[],           /* I    Input signal                */

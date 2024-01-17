@@ -50,6 +50,7 @@
 #include <stdarg.h>
 #include "celt_lpc.h"
 #include "vq.h"
+#include "fastfunc.h"
 
 /* The maximum pitch lag to allow in the pitch-based PLC. It's possible to save
    CPU time in the PLC pitch search by making this smaller than MAX_PERIOD. The
@@ -263,7 +264,7 @@ static void deemphasis_stereo_simple(celt_sig *in[], opus_val16 *pcm, int N, con
 #ifndef RESYNTH
 static
 #endif
-void deemphasis(celt_sig *in[], opus_val16 *pcm, int N, int C, int downsample, const opus_val16 *coef,
+FAST_FUNC void deemphasis(celt_sig *in[], opus_val16 *pcm, int N, int C, int downsample, const opus_val16 *coef,
       celt_sig *mem, int accum)
 {
    int c;

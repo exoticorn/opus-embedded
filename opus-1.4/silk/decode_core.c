@@ -31,11 +31,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
 #include "main.h"
 #include "stack_alloc.h"
+#include "fastfunc.h"
 
 /**********************************************************/
 /* Core decoder. Performs inverse NSQ operation LTP + LPC */
 /**********************************************************/
-void silk_decode_core(
+FAST_FUNC void silk_decode_core(
     silk_decoder_state          *psDec,                         /* I/O  Decoder state                               */
     silk_decoder_control        *psDecCtrl,                     /* I    Decoder control                             */
     opus_int16                  xq[],                           /* O    Decoded speech                              */

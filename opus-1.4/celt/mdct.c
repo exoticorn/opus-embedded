@@ -52,6 +52,7 @@
 #include "os_support.h"
 #include "mathops.h"
 #include "stack_alloc.h"
+#include "fastfunc.h"
 
 #if defined(MIPSr1_ASM)
 #include "mips/mdct_mipsr1.h"
@@ -239,7 +240,7 @@ void clt_mdct_forward_c(const mdct_lookup *l, kiss_fft_scalar *in, kiss_fft_scal
 #endif /* OVERRIDE_clt_mdct_forward */
 
 #ifndef OVERRIDE_clt_mdct_backward
-void clt_mdct_backward_c(const mdct_lookup *l, kiss_fft_scalar *in, kiss_fft_scalar * OPUS_RESTRICT out,
+FAST_FUNC void clt_mdct_backward_c(const mdct_lookup *l, kiss_fft_scalar *in, kiss_fft_scalar * OPUS_RESTRICT out,
       const opus_val16 * OPUS_RESTRICT window, int overlap, int shift, int stride, int arch)
 {
    int i;

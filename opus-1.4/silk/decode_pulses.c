@@ -30,11 +30,12 @@ POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 #include "main.h"
+#include "fastfunc.h"
 
 /*********************************************/
 /* Decode quantization indices of excitation */
 /*********************************************/
-void silk_decode_pulses(
+FAST_FUNC void silk_decode_pulses(
     ec_dec                      *psRangeDec,                    /* I/O  Compressor data structure                   */
     opus_int16                  pulses[],                       /* O    Excitation signal                           */
     const opus_int              signalType,                     /* I    Sigtype                                     */
