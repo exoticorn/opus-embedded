@@ -125,7 +125,7 @@ impl<'a> Decoder<'a> {
                 data_ptr,
                 data_len as i32,
                 samples.as_mut_ptr(),
-                frame_size as i32,
+                frame_size.try_into().unwrap(),
                 fec as c_int,
             )
         };
@@ -133,6 +133,16 @@ impl<'a> Decoder<'a> {
             Ok(result as usize)
         } else {
             Err(Error::from_c(result))
+        }
+    }
+
+    /// Resets the decoder state to be equivalent to a freshly initialized state.
+    ///
+    /// This should be called when switching streams in order to prevent the back to back decoding
+    /// from giving different results from one at a time decoding.
+    pub fn reset(&mut self) {
+        unsafe {
+            opus_sys::opus_decoder_ctl(self.0.as_mut_ptr(), opus_sys::OPUS_RESET_STATE);
         }
     }
 
@@ -174,6 +184,31 @@ impl<'a> Decoder<'a> {
         let size = unsafe { opus_sys::opus_decoder_get_size(channels as c_int) };
         size.try_into().expect("size should fit into usize")
     }
+
+    /// Gets the number of samples of an Opus packet.
+    ///
+    /// # Parameters
+    ///
+    /// - `packet`: Opus packet
+    ///
+    /// # Returns
+    ///
+    /// The number of samples encoded in the packet or an error.
+    pub fn nb_samples_in_packet(&self, packet: &[u8]) -> Result<usize> {
+        let result = unsafe {
+            opus_sys::opus_decoder_get_nb_samples(
+                self.0.as_ptr(),
+                packet.as_ptr(),
+                packet.len().try_into().unwrap(),
+            )
+        };
+
+        if result >= 0 {
+            Ok(result as usize)
+        } else {
+            Err(Error::from_c(result))
+        }
+    }
 }
 
 mod opus_sys {
@@ -192,7 +227,9 @@ mod opus_sys {
             decode_fec: c_int,
         ) -> c_int;
         pub fn opus_decoder_ctl(st: *mut u8, request: c_int, ...) -> c_int;
+        pub fn opus_decoder_get_nb_samples(st: *const u8, data: *const c_uchar, len: i32) -> c_int;
     }
 
+    pub const OPUS_RESET_STATE: c_int = 4028;
     pub const OPUS_SET_GAIN_REQUEST: c_int = 4034;
 }

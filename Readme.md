@@ -7,7 +7,6 @@ allocator support disable. You need to pass in a buffer to create the decoder in
 
 * no support for floating point or platform specific optimizations where they would be applicable
 * no encoder support
-* only the most basic functions for decoding are exposed
 
 ## Feature flags
 
@@ -15,19 +14,21 @@ allocator support disable. You need to pass in a buffer to create the decoder in
 
 If you are running on a target where access to flash is slow (eg RP2040), you can try enabling the
 code-in-ram feature for more performance.
-This places a few performance-critical functions in the `.data` section, ie. RAM.
+This places a few performance-critical functions in the `.data` section, ie. RAM. (At the cost
+of some assembler warnings.)
 
 ## Performance
 
-A very non-thorough performance test on a Raspberry Pi Pico gives the following:
+Here are some performance numbers on a Raspberry Pi Pico running at the default of 125MHz:
 
-| `code-in-ram` | stereo | mono |
-|---------------|--------|------|
-| disabled      | 75%    | 59 % |
-| enabled       | 68%    | 51 % |
+| sample    | kbps | `code-in-ram` | stereo | mono |
+|-----------|------|---------------|--------|------|
+| jingle    | 48   | off           | 75%    | 59%  |
+|           |      | on            | 68%    | 51%  |
+| rock      | 96   | off           | 83%    | 66%  |
+|           |      | on            | 80%    | 66%  |
+| audiobook | 32   | off           | 77%    | 60%  |
+|           |      | on            | 67%    | 52%  |
 
-The parameters for this test were:
-
-* A short, 10s sample encoded to a 48kbps stereo Opus stream. (https://pixabay.com/de/music/intro-outro-good-morning-13396/)
-* Decoded to 48kHz, either stero or mono (but note that the Opus stream to be decoded was stereo in both cases)
-* Pi Pico running at 125MHz
+The percentages are decoding time in relation to the duration of the sample. This needs to be
+safely below 100% for real-time playback.
