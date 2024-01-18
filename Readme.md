@@ -27,8 +27,14 @@ Here are some performance numbers on a Raspberry Pi Pico running at the default 
 |           |      | on            | 68%    | 51%  |
 | rock      | 96   | off           | 83%    | 66%  |
 |           |      | on            | 80%    | 66%  |
+|           | 48   | off           | 74%    | 57%  |
+|           |      | on            | 68%    | 53%  |
 | audiobook | 32   | off           | 77%    | 60%  |
 |           |      | on            | 67%    | 52%  |
+| symphony  | 128  | off           | 84%    | 67%  |
+|           |      | on            | 80%    | 65%  |
+|           | 160  | off           | 86%    | 69%  |
+|           |      | on            | 87%    | 73%  |
 
 The percentages are decoding time in relation to the duration of the sample. This needs to be
 safely below 100% for real-time playback.
